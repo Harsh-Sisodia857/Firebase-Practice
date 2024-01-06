@@ -1,3 +1,4 @@
+import React,{useEffect} from 'react'
 import { initializeApp } from "firebase/app";
 import firebaseContext from "./firebaseContext";
 import {
@@ -6,6 +7,8 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -54,11 +57,33 @@ const FirebaseState = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  };
+    };
+    
+    useEffect(() => {
+        // to check whether user is logged in or not
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("User is Logged In");
+            } else {
+                console.log("User is Not Logged In");
+            }
+        })
+    }, [])
+
+    const LoggedOut = () => {
+        signOut(auth)
+          .then(() => {
+            console.log("Sign-out successful.")
+          })
+          .catch((error) => {
+              console.log(error);
+          });
+    }
+    
 
   return (
     <firebaseContext.Provider
-      value={{ signInUser, signUpUser, signUpWithGoogle }}
+      value={{ signInUser, signUpUser, signUpWithGoogle, LoggedOut }}
     >
       {props.children}
     </firebaseContext.Provider>

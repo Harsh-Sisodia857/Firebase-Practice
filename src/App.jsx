@@ -4,7 +4,7 @@ import firebaseContext from './Context/firebase/firebaseContext';
 
 function App() {
   const Context = useContext(firebaseContext);
-  const { signInUser, signUpUser, signUpWithGoogle } = Context;
+  const { signInUser, signUpUser, signUpWithGoogle, LoggedOut } = Context;
   console.log(Context)
 
   return (
@@ -16,7 +16,8 @@ function App() {
       <button onClick={() => signInUser("harsh@gmail.com", "12345678")}>
         Sign In User
       </button> */}
-      <button onClick={() => signUpWithGoogle()}>Sign In Using Google</button>
+      {/* <button onClick={() => signUpWithGoogle()}>Sign In Using Google</button> */}
+      <button onClick={LoggedOut}>Logout</button>
     </div>
   );
 }
