@@ -12,6 +12,7 @@ function App() {
     writeDataToFireStoreWithSubCollection,
     writeDataToFireStore,
     readDataFromFireStore,
+    getDataByQuery,
   } = Context;
   console.log(Context)
 
@@ -26,8 +27,9 @@ function App() {
       </button> */}
       {/* <button onClick={() => signUpWithGoogle()}>Sign In Using Google</button> */}
       {/* <button onClick={LoggedOut}>Logout</button> */}
-      <button onClick={writeDataToFireStore}>Send Data To Firebase</button>
-      <button onClick={readDataFromFireStore}>Read Data From Firebase</button>
+      {/* <button onClick={writeDataToFireStore}>Send Data To Firebase</button> */}
+      {/* <button onClick={readDataFromFireStore}>Read Data From Firebase</button> */}
+      <button onClick={getDataByQuery}>Read Data From Firebase</button>
     </div>
   );
 }

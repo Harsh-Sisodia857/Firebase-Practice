@@ -7,6 +7,7 @@ import {
   addDoc,
   doc,
   getDoc,
+  query,where,getDocs,
 } from "firebase/firestore";
 
 import {
@@ -45,6 +46,17 @@ const FirebaseState = (props) => {
     } catch (e) {
       console.error("Error adding document: ", e);
     }
+  }
+
+  const getDataByQuery = async () => {
+    const citiesRef = collection(fireStore, "users");
+    const q = query(citiesRef, where("Gender", "==", "Male"));
+    const querySnapshot = await getDocs(q);
+    console.log(querySnapshot)
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+    });
+
   }
 
   const writeDataToFireStoreWithSubCollection = async () => {
@@ -133,6 +145,7 @@ const FirebaseState = (props) => {
         writeDataToFireStore,
         writeDataToFireStoreWithSubCollection,
         readDataFromFireStore,
+        getDataByQuery,
       }}
     >
       {props.children}
