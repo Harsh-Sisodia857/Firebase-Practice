@@ -11,7 +11,7 @@ function App() {
     LoggedOut,
     writeDataToFireStoreWithSubCollection,
     writeDataToFireStore,
-    readDataFromFireStore,
+    readDataFromFireStore,updatingDocs,
     getDataByQuery,
   } = Context;
   console.log(Context)
@@ -29,7 +29,8 @@ function App() {
       {/* <button onClick={LoggedOut}>Logout</button> */}
       {/* <button onClick={writeDataToFireStore}>Send Data To Firebase</button> */}
       {/* <button onClick={readDataFromFireStore}>Read Data From Firebase</button> */}
-      <button onClick={getDataByQuery}>Read Data From Firebase</button>
+      {/* <button onClick={getDataByQuery}>Read Data From Firebase</button> */}
+      <button onClick={updatingDocs}>Update Data</button>
     </div>
   );
 }

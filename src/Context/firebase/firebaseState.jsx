@@ -7,7 +7,10 @@ import {
   addDoc,
   doc,
   getDoc,
-  query,where,getDocs,
+  query,
+  where,
+  getDocs,
+  updateDoc,
 } from "firebase/firestore";
 
 import {
@@ -82,6 +85,13 @@ const FirebaseState = (props) => {
     }
   }
 
+  const updatingDocs = async () => {
+    const citiesRef = doc(fireStore, "cities", "5RdfsXDrWhNRekdq9FGU");
+    await updateDoc(citiesRef, {
+      Pincode : "203131"
+    })
+  }
+
   const signUpWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -146,6 +156,7 @@ const FirebaseState = (props) => {
         writeDataToFireStoreWithSubCollection,
         readDataFromFireStore,
         getDataByQuery,
+        updatingDocs,
       }}
     >
       {props.children}
