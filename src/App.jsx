@@ -4,7 +4,15 @@ import firebaseContext from './Context/firebase/firebaseContext';
 
 function App() {
   const Context = useContext(firebaseContext);
-  const { signInUser, signUpUser, signUpWithGoogle, LoggedOut } = Context;
+  const {
+    signInUser,
+    signUpUser,
+    signUpWithGoogle,
+    LoggedOut,
+    writeDataToFireStoreWithSubCollection,
+    writeDataToFireStore,
+    readDataFromFireStore,
+  } = Context;
   console.log(Context)
 
   return (
@@ -17,7 +25,9 @@ function App() {
         Sign In User
       </button> */}
       {/* <button onClick={() => signUpWithGoogle()}>Sign In Using Google</button> */}
-      <button onClick={LoggedOut}>Logout</button>
+      {/* <button onClick={LoggedOut}>Logout</button> */}
+      <button onClick={writeDataToFireStore}>Send Data To Firebase</button>
+      <button onClick={readDataFromFireStore}>Read Data From Firebase</button>
     </div>
   );
 }

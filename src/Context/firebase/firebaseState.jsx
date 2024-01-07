@@ -1,6 +1,14 @@
-import React,{useEffect} from 'react'
+import React, { useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import firebaseContext from "./firebaseContext";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -22,10 +30,45 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
+const fireStore = getFirestore(app);
 const FirebaseState = (props) => {
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
+
+  const writeDataToFireStore = async () => {
+    try {
+      const result = await addDoc(collection(fireStore, "cities"), {
+        City: "Noida",
+        Pincode: 203174,
+      });
+      console.log("Document written with ID: ", result);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
+
+  const writeDataToFireStoreWithSubCollection = async () => {
+    try {
+      const result = await addDoc(collection(fireStore, "cities/5RdfsXDrWhNRekdq9FGU/places"), {
+        Name: "Sector 62",
+        Description: "Fortis Hospital,Jaypee Engineering College,PW Pathshala",
+        Date : Date.now()
+      });
+      console.log("Document written with ID: ", result);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+
+  const readDataFromFireStore = async () => {
+    const citiesRef = doc(fireStore, "cities","5RdfsXDrWhNRekdq9FGU");
+    const docSnap = await getDoc(citiesRef)
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+    } else {
+      console.log("No such document!");
+    }
+  }
 
   const signUpWithGoogle = () => {
     signInWithPopup(auth, provider)
@@ -57,33 +100,40 @@ const FirebaseState = (props) => {
       .catch((err) => {
         console.log(err);
       });
-    };
-    
-    useEffect(() => {
-        // to check whether user is logged in or not
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log("User is Logged In");
-            } else {
-                console.log("User is Not Logged In");
-            }
-        })
-    }, [])
+  };
 
-    const LoggedOut = () => {
-        signOut(auth)
-          .then(() => {
-            console.log("Sign-out successful.")
-          })
-          .catch((error) => {
-              console.log(error);
-          });
-    }
-    
+  useEffect(() => {
+    // to check whether user is logged in or not
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("User is Logged In");
+      } else {
+        console.log("User is Not Logged In");
+      }
+    });
+  }, []);
+
+  const LoggedOut = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("Sign-out successful.");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <firebaseContext.Provider
-      value={{ signInUser, signUpUser, signUpWithGoogle, LoggedOut }}
+      value={{
+        signInUser,
+        signUpUser,
+        signUpWithGoogle,
+        LoggedOut,
+        writeDataToFireStore,
+        writeDataToFireStoreWithSubCollection,
+        readDataFromFireStore,
+      }}
     >
       {props.children}
     </firebaseContext.Provider>
